@@ -34,10 +34,37 @@ class AccountsController extends Controller
     {
         $user_id = Auth::user()->id;
         $user_name = Auth::user()->username;
-        $accounts = \App\Accounts::get_allaccounts();
-        return view('accounts', ['user_name' => $user_name, 'accounts' => $accounts ]);
+        $accounts = \App\Accounts::get_accounts();
 
+        return view('accounts', ['user_name' => $user_name, 'accounts' => $accounts ]);
     }
 
-    
+    public function oldindex(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $user_name = Auth::user()->username;
+        $allaccounts = \App\Accounts::get_allaccounts();
+foreach ($allaccounts as $key => $value) {
+    $accounts[$key]['account'] = $value->account;
+    $accounts[$key]['name'] = $value->firstname.' '.$value->lastname;
+    $accounts[$key]['skype'] = $value->skype;
+    $accounts[$key]['occupied'] = $value->occupied;
+
+    if(!empty($value->contract_id)){
+        $temp = \App\Contracts::get_contract_by_id($value->contract_id);
+        $accounts[$key]['contract1']['client'] = $temp[0];
+        $temp = \App\User::get_developer($value->user_id);
+        $accounts[$key]['contract1']['developer'] = $temp;
+    }
+    if(!empty($value->contract2_id)){
+        $temp = \App\Contracts::get_contract_by_id($value->contract2_id);
+        $accounts[$key]['contract2']['client'] = $temp[0];
+        $temp = \App\User::get_developer($value->user2_id);
+        $accounts[$key]['contract2']['developer'] = $temp;
+    }
+       
+}
+        //$accounts = \App\Contracts::get_currentcontracts();
+        return view('accounts_temp', ['user_name' => $user_name, 'accounts' => $accounts ]);
+    }
 }

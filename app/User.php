@@ -41,12 +41,12 @@ class User extends Authenticatable
     {
         return static::orderBy('id', 'asc')->get();
     }
-    public static function get_user($id)
+/*    public static function get_user($id)
     {
         return static::where('id', $id)->get();
     }
-
-    public static function get_user_koefficient($id)
+*/
+    public static function get_developer($id)
     {
         return static::find($id);
     }
@@ -54,6 +54,11 @@ class User extends Authenticatable
     public static function get_users_shift_current($id)
     {
         return static::where('id', '!=', $id)->where('id', '>', '1')->orderBy('koefficient', 'desc')->get();
+    }
+
+    public static function get_users_hall()
+    {
+        return static::join('bonuses', 'users.id', '=', 'bonuses.user_id') -> whereNotNull('bonuses.bonus')->distinct('users.id')->get();
     }
 
 

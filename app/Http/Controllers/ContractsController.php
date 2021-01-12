@@ -31,20 +31,33 @@ class ContractsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function currentcontracts()
-    {
-       
-        $contracts = \App\Contracts::get_currentcontracts();
- 
-        return view('contracts', ['contracts' => $contracts ]);
-    }
+    
 
      public function index()
     {
        
         $contracts = \App\Contracts::get_completedcontracts();
  
-        return view('completedcontracts', ['contracts' => $contracts ]);
+        return view('contracts', ['contracts' => $contracts ]);
+    }
+
+    public function editContract(Request $request)
+    {
+        $data = $request->all();
+        $contract = \App\Contracts::get_contract_by_id($data['id']);
+        return view('contract', ['contract' => $contract ]);
+            
+        return redirect()->action('ContractsController@index');
+    }
+
+    public function saveContract(Request $request)
+    {
+        $token = $request->input('_token');
+        $data = $request->all();
+        foreach ($data['contract'] as $key => $value ) 
+            DB::table('contracts')->where('id', $key)->update(['user_id' => Auth::user()->id]);
+            
+        return redirect()->action('ContractsController@index');
     }
 
 }

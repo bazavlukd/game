@@ -48,4 +48,22 @@ class DashboardController extends Controller
     return view('dashboard', ['users' => $devresult, 'avatars' => $avatars ]);
     
     }
+
+    public function saveTourResults()
+    {
+        $date = Carbon::parse(TimeConstants::STARTDATE);
+        $now = Carbon::now();
+        $tour = $date->diffInMonths($now);
+        $developers = \App\Time::get_21besttime($tour);
+        foreach ($developers as $value) {
+            $user_id = $value->user_id;
+            $mentoring = \App\Points::get_result_by_user($tour, $user_id, 'mentoring');
+            $responsibility = \App\Points::get_result_by_user($tour, $user_id, 'responsibility');
+            $codestyle = \App\Points::get_result_by_user($tour, $user_id, 'codestyle');
+            $result = $value->trackingtime + $mentoring + $responsibility + $codestyle;
+            DB::table('bonuses')->insert(['user_id' => $user_id, 'tour' => $tour, 'result' => $result, 'place' => 0 ]);
+        }    
+        
+        return redirect()->action('DashboardController@index');
+    }
 }

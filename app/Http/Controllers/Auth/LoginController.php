@@ -37,9 +37,11 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        //$user_name = \App\User::get_user_by_email('andrey.deriyenko@gmail.com')->pluck('username');
-        //$id = \App\User::get_user_by_email('andrey.deriyenko@gmail.com')->pluck('id');
-        //session(['user_name' => $user_name, 'user_id' => $id]);
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        return ['email' => $request->{$this->username()}, 'password' => $request->password, 'end_date' => NULL ];
     }
 }

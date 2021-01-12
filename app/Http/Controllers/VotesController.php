@@ -86,40 +86,40 @@ class VotesController extends Controller
 
         if(!empty($data['responsibility']))
         foreach ($data['responsibility'] as $key => $value ) {
-            $koeff = \App\User::get_user_koefficient($key);
+            $developer = \App\User::get_developer($key);
             \App\Points::create([
                 'token' => $token, 
                 'skill' => 'responsibility', 
                 'point' => $point, 
                 'tester_id' => Auth::user()->id,
                 'tour' => $tour,
-                'koefficient' => $koeff->koefficient,
+                'koefficient' => $developer->koefficient,
                 'user_id' => $key ]);
         }
 
         if(!empty($data['mentoring']))
         foreach ($data['mentoring'] as $key => $value ) {
-            $koeff = \App\User::get_user_koefficient($key);
+            $developer = \App\User::get_developer($key);
             \App\Points::create([
                 'token' => $token, 
                 'skill' => 'mentoring', 
                 'point' => $point, 
                 'tester_id' => Auth::user()->id,
                 'tour' => $tour,
-                'koefficient' => $koeff->koefficient,
+                'koefficient' => $developer->koefficient,
                 'user_id' => $key ]);
         }
 
         if(!empty($data['codestyle']))
         foreach ($data['codestyle'] as $key => $value ) {
-            $koeff = \App\User::get_user_koefficient($key);
+            $developer = \App\User::get_developer($key);
             \App\Points::create([
                 'token' => $token, 
                 'skill' => 'codestyle', 
                 'point' => $point, 
                 'tester_id' => Auth::user()->id,
                 'tour' => $tour,
-                'koefficient' => $koeff->koefficient,
+                'koefficient' => $developer->koefficient,
                 'user_id' => $key ]);
         }
     return redirect()->action('VotesController@index');

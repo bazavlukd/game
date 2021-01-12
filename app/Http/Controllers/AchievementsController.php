@@ -66,6 +66,6 @@ class AchievementsController extends Controller
         DB::table('users')->where('id', Auth::User()->id)->increment('koefficient', $counter);
 
         }
-    return redirect()->action('DashboardController@index');
+    return redirect()->action('AchievementsController@index');
    }
 }

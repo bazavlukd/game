@@ -8,7 +8,7 @@ class Time extends Model
 {
     public static function get_21besttime($tour)
 	{
-		return static::join('users', 'users.id', '=', 'times.user_id')->where('tour', $tour)->orderBy('trackingtime', 'desc')->take(21)->get();
+		return static::join('users', 'users.id', '=', 'times.user_id')->where('tour', $tour)->orderBy('trackingtime', 'desc')->orderBy('times.id', 'asc')->take(21)->get();
 	}
 
 	public static function get_timebyid($user_id, $tour)

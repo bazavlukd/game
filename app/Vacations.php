@@ -17,12 +17,12 @@ class Vacations extends Model
 
 	public static function get_last_vacations_by_user($user_id)
 	{
-		return static::where('user_id', $user_id)->where('end', '<', NOW())->limit(1)->get();
+		return static::select('start', 'end', 'location')->where('user_id', $user_id)->where('end', '<', NOW())->first();
 	}
 
 	public static function get_next_vacations_by_user($user_id)
 	{
-		return static::where('user_id', $user_id)->where('start', '>', NOW())->limit(1)->get();
+		return static::select('start', 'end', 'location')->where('user_id', $user_id)->where('start', '>', NOW())->first();
 	}
 
 	public static function save_vacation($user_id, $period, $location, $start, $end)
